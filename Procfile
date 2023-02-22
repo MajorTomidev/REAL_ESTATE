@@ -1,0 +1,1 @@
+web: gunicorn REAL_ESTATE.wsgi

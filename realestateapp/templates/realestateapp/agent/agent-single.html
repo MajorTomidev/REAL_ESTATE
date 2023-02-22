@@ -93,17 +93,8 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'blogpage' %}">Blog</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Pages
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{% url 'propertypage' property.id %}">Property Single</a>
-              <a class="dropdown-item" href="{% url 'blogpage' blog.id %}">Blog Single</a>
-              <a class="dropdown-item" href="{% url 'contactpage' %}">Agents Grid</a>
-              <a class="dropdown-item active" href="{% url 'agentpage' agent.id %}">Agent Single</a>
-            </div>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'agentpage' %}">Agent</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'contactpage' %}">Contact</a>
@@ -121,11 +112,12 @@
   <!--/ Intro Single star /-->
   <section class="intro-single">
     <div class="container">
+      
       <div class="row">
-        {% for agent in agent %}
+        
         <div class="col-md-12 col-lg-8">
           <div class="title-single-box">
-            <h1 class="title-single">{{ agent_name }}</h1>
+            <h1 class="title-single">{{ agent.agent_name }}</h1>
             <span class="color-text-a">Agent for Estate Agency</span>
           </div>
         </div>
@@ -139,12 +131,12 @@
                 <a href="{% url 'agentpage' %}">Agents</a>
               </li>
               <li class="breadcrumb-item active" aria-current="page">
-                {{ agent_name }}
+                {{ agents.agent_name }}
               </li>
             </ol>
           </nav>
         </div>
-        {% endfor %}
+        
       </div>
     </div>
   </section>
@@ -157,7 +149,7 @@
         
         <div class="col-sm-12">
           <div class="row">
-            {% for agent in agent %}
+            
             <div class="col-md-6">
               <div class="agent-avatar-box">
 
@@ -169,23 +161,23 @@
               <div class="agent-info-box">
                 <div class="agent-title">
                   <div class="title-box-d">
-                    <h3 class="title-d">{{ agent_name }}
+                    <h3 class="title-d">{{ agents.agent_name}}
                       </h3>
                   </div>
                 </div>
                 <div class="agent-content mb-3">
                   <p class="content-d color-text-a">
-                  {{ agent_description }}
+                    {{ agents.agent_description }}
                   </p>
                   <div class="info-agents color-a">
                     <p>
                       <strong>Phone: </strong>
-                      <span class="color-text-a"> +234 {{ agent_mobilenumber }} </span>
+                      <span class="color-text-a"> +234{{ agents.agent_mobilenumber }}</span>
                     </p>
                     
                     <p>
                       <strong>Email: </strong>
-                      <span class="color-text-a"> {{ agent_email }}</span>
+                      <span class="color-text-a">{{ agents.agent_email }}</span>
                     </p>
                   </div>
                 </div>
@@ -220,7 +212,7 @@
                 </div>
               </div>
             </div>
-            {% endfor %}
+            
           </div>
         </div>
         <div class="col-md-12 section-t8">
@@ -578,6 +570,9 @@
               </li>
               <li class="list-inline-item">
                 <a href="#">Blog</a>
+              </li>
+              <li class="list-inline-item">
+                <a href="{% url 'agentpage' %}">Agent</a>
               </li>
               <li class="list-inline-item">
                 <a href="#">Contact</a>

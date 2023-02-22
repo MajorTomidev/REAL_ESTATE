@@ -93,17 +93,8 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'blogpage' %}">Blog</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Pages
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{% url 'propertypage' %}">Property Single</a>
-              <a class="dropdown-item" href="{% url 'blogpage' %}">Blog Single</a>
-              <a class="dropdown-item" href="{% url 'contactpage' %}">Agents Grid</a>
-              <a class="dropdown-item" href="{% url 'agentpage' %}">Agent Single</a>
-            </div>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'agentpage' %}">Agent</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'contactpage' %}">Contact</a>
@@ -125,7 +116,7 @@
         {% for about in about %}
         <div class="col-md-12 col-lg-8">
           <div class="title-single-box">
-            <h1 class="title-single">{{ about_headline }}</h1>
+            <h1 class="title-single">{{ about.about_headline }}</h1>
           </div>
         </div>
         <div class="col-md-12 col-lg-4">
@@ -151,12 +142,13 @@
   <section class="section-about">
     <div class="container">
       <div class="row">
+        {% for about in about %}
         <div class="col-sm-12">
           <div class="about-img-box">
             <img src="{% static 'realestateapp/img/slide-about-1.jpg' %}" alt="" class="img-fluid">
           </div>
           <div class="sinse-box">
-            <h3 class="sinse-title">EstateAgency
+            <h3 class="sinse-title">Estate Agency
               <span></span>
               <br> Since 2012</h3>
             <p>Real Estate & Hospitality</p>
@@ -175,16 +167,16 @@
             <div class="col-md-6 col-lg-5 section-md-t3">
               <div class="title-box-d">
                 <h3 class="title-d">
-                  {{ about_headline }}
-                  <br> nibh.</h3>
+                  {{ about.about_headline }}</h3>
               </div>
               <p class="color-text-a">
-                {{ about_description }}
+                {{ about.about_description }}
               </p>
              
             </div>
           </div>
         </div>
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -203,94 +195,29 @@
         </div>
       </div>
       <div class="row">
-        
+        {% for agents in agents %}
         <div class="col-md-4">
-          {% for agent in agent %}
           <div class="card-box-d">
             <div class="card-img-d">
-              {% for images in agent.image.all %}
-              <img src="{{ images.image.url }}" alt="" class="img-d img-fluid">
-              {% endfor %}
+              <img src="{% static 'realestateapp/img/agent-2.jpg' %}" alt="" class="img-d img-fluid">
             </div>
             <div class="card-overlay card-overlay-hover">
               <div class="card-header-d">
                 <div class="card-title-d align-self-center">
                   <h3 class="title-d">
-                    <a href="{% url 'agentdetailpage' agent.id %}" class="link-two">{{ agent_name }}</a>
+                    <a href="#" class="link-two">{{ agents.agent_name }}</a>
                   </h3>
                 </div>
               </div>
               <div class="card-body-d">
                 <p class="content-d color-text-a">
-                  {{ agent_description }}
+                  {{ agents.agent_description }}
                 </p>
                 <div class="info-agents color-a">
                   <p>
-                    <strong>Phone: </strong> +234 {{ agent_mobilenumber }}</p>
+                    <strong>Phone: </strong> +234 {{ agents.agent_mobilenumber }}</p>
                   <p>
-                    <strong>Email: </strong> {{ agent_email }}</p>
-                </div>
-              </div>
-              <div class="card-footer-d">
-                <div class="socials-footer d-flex justify-content-center">
-                  <ul class="list-inline">
-                    <li class="list-inline-item">
-                      <a href="#" class="link-one">
-                        <i class="fa fa-facebook" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#" class="link-one">
-                        <i class="fa fa-twitter" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#" class="link-one">
-                        <i class="fa fa-instagram" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#" class="link-one">
-                        <i class="fa fa-pinterest-p" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#" class="link-one">
-                        <i class="fa fa-dribbble" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-        
-
-        <div class="col-md-4">
-          <div class="card-box-d">
-            <div class="card-img-d">
-              <img src="img/agent-6.jpg" alt="" class="img-d img-fluid">
-            </div>
-            <div class="card-overlay card-overlay-hover">
-              <div class="card-header-d">
-                <div class="card-title-d align-self-center">
-                  <h3 class="title-d">
-                    <a href="agent-single.html" class="link-two">Stiven Spilver
-                      <br> Darw</a>
-                  </h3>
-                </div>
-              </div>
-              <div class="card-body-d">
-                <p class="content-d color-text-a">
-                  Sed porttitor lectus nibh, Cras ultricies ligula sed magna dictum porta two.
-                </p>
-                <div class="info-agents color-a">
-                  <p>
-                    <strong>Phone: </strong> +54 356 945234</p>
-                  <p>
-                    <strong>Email: </strong> agents@example.com</p>
+                    <strong>Email: </strong> {{ agents.agent_email }}</p>
                 </div>
               </div>
               <div class="card-footer-d">
@@ -327,66 +254,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card-box-d">
-            <div class="card-img-d">
-              <img src="img/agent-5.jpg" alt="" class="img-d img-fluid">
-            </div>
-            <div class="card-overlay card-overlay-hover">
-              <div class="card-header-d">
-                <div class="card-title-d align-self-center">
-                  <h3 class="title-d">
-                    <a href="agent-single.html" class="link-two">Emma Toledo
-                      <br> Cascada</a>
-                  </h3>
-                </div>
-              </div>
-              <div class="card-body-d">
-                <p class="content-d color-text-a">
-                  Sed porttitor lectus nibh, Cras ultricies ligula sed magna dictum porta two.
-                </p>
-                <div class="info-agents color-a">
-                  <p>
-                    <strong>Phone: </strong> +54 356 945234</p>
-                  <p>
-                    <strong>Email: </strong> agents@example.com</p>
-                </div>
-              </div>
-              <div class="card-footer-d">
-                <div class="socials-footer d-flex justify-content-center">
-                  <ul class="list-inline">
-                    <li class="list-inline-item">
-                      <a href="#" class="link-one">
-                        <i class="fa fa-facebook" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#" class="link-one">
-                        <i class="fa fa-twitter" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#" class="link-one">
-                        <i class="fa fa-instagram" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#" class="link-one">
-                        <i class="fa fa-pinterest-p" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#" class="link-one">
-                        <i class="fa fa-dribbble" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -396,27 +264,28 @@
   <section class="section-footer">
     <div class="container">
       <div class="row">
+        {% for companydetail in companydetail %}
         <div class="col-sm-12 col-md-4">
           <div class="widget-a">
             <div class="w-header-a">
-              <h3 class="w-title-a text-brand">EstateAgency</h3>
+              <h3 class="w-title-a text-brand">Estate Agency</h3>
             </div>
             <div class="w-body-a">
               <p class="w-text-a color-text-a">
-                {{ company_description}}
+                {{ companydetail.company_description }}
               </p>
             </div>
             <div class="w-footer-a">
               <ul class="list-unstyled">
                 <li class="color-a">
-                  <span class="color-text-a">Phone .</span> +234{{ company_phonenumber }}</li>
+                  <span class="color-text-a">Email:</span> {{ companydetail.company_email }}</li>
                 <li class="color-a">
-                  <span class="color-text-a">Email .</span> {{ company_email }}</li>
+                  <span class="color-text-a">Phone Number:</span> +234{{ companydetail.company_phonenumber }}</li>
               </ul>
             </div>
           </div>
         </div>
-
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -438,6 +307,9 @@
               <li class="list-inline-item">
                 <a href="{% url 'blogpage' %}">Blog</a>
               </li>
+              <!-- <li class="nav-item">
+                <a class="nav-link" href="{% url 'agentpage' %}">Agent</a>
+              </li> -->
               <li class="list-inline-item">
                 <a href="{% url 'contactpage' %}">Contact</a>
               </li>

@@ -91,18 +91,6 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'blogpage' %}">Blog</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Pages
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{% url 'propertydetailpage'  %}">Property Single</a>
-              <a class="dropdown-item" href="{% url 'blogdetailpage'  %}">Blog Single</a>
-              <a class="dropdown-item" href="{% url 'agentpage'  %}">Agents Grid</a>
-              <a class="dropdown-item" href="{% url 'agentpage'  %}">Agent Single</a>
-            </div>
-          </li>
           <li class="nav-item">
             <a class="nav-link active" href="{% url 'contactpage'  %}">Contact</a>
           </li>
@@ -118,13 +106,24 @@
 
   <!--/ Intro Single star /-->
   <section class="intro-single">
+
     <div class="container">
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert" alert-{{ message.tags }}>
+        {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% block content %}{% endblock %}
       <div class="row">
         <div class="col-md-12 col-lg-8">
+          
           <div class="title-single-box">
-            <h1 class="title-single">Contact US</h1>
-            <span class="color-text-a">Aut voluptas consequatur unde sed omnis ex placeat quis eos. Aut natus officia corrupti qui autem fugit consectetur quo. Et ipsum eveniet laboriosam voluptas beatae possimus qui ducimus. Et voluptatem deleniti. Voluptatum voluptatibus amet. Et esse sed omnis inventore hic culpa.</span>
+            <h1 class="title-single">Contact Us</h1>
+            <span class="color-text-a">How can we help?</span>
           </div>
+          
         </div>
         <div class="col-md-12 col-lg-4">
           <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
@@ -158,33 +157,32 @@
         <div class="col-sm-12 section-t8">
           <div class="row">
             <div class="col-md-7">
-              <form class="form-a contactForm" action="" method="post" role="form">
+              <form method="post" >
                 {% csrf_token %}
-                <div id="sendmessage">Your message has been sent. Thank you!</div>
-                <div id="errormessage"></div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
-                      <input type="text" name="name" class="form-control form-control-lg form-control-a" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-                      <div class="validation"></div>
+                      <input type="text" name="name" class="form-control form-control-lg form-control-a" required id="id_name" placeholder="Your Name" >
                     </div>
                   </div>
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
-                      <input name="email" type="email" class="form-control form-control-lg form-control-a" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
-                      <div class="validation"></div>
+                      <input name="email" type="email" class="form-control form-control-lg form-control-a" required id="id_email" placeholder="Your Email">
+                      
                     </div>
                   </div>
                   <div class="col-md-12 mb-3">
                     <div class="form-group">
-                      <input type="url" name="subject" class="form-control form-control-lg form-control-a" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject">
-                      <div class="validation"></div>
+                      <input type="text" name="subject" class="form-control form-control-lg form-control-a" required id="id_subject" placeholder="Subject" >
+                      
                     </div>
                   </div>
                   <div class="col-md-12 mb-3">
                     <div class="form-group">
-                      <textarea name="message" class="form-control" name="message" cols="45" rows="8" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
-                      <div class="validation"></div>
+
+                      
+                      <textarea name="comment" class="form-control"  cols="40" rows="10" required id="id_comment" placeholder="Message"></textarea> 
+                      
                     </div>
                   </div>
                   <div class="col-md-12">
@@ -199,20 +197,23 @@
                   <span class="ion-ios-paper-plane"></span>
                 </div>
                 <div class="icon-box-content table-cell">
+                  {% for companydetail in companydetail %}
                   <div class="icon-box-title">
                     <h4 class="icon-title">Say Hello</h4>
                   </div>
                   <div class="icon-box-content">
-                    <p class="mb-1">Email.
-                      <span class="color-a">contact@example.com</span>
+                    <p class="mb-1">Email:
+                      <span class="color-a">{{ companydetail.company_email }}</span>
                     </p>
-                    <p class="mb-1">Phone.
-                      <span class="color-a">+54 356 945234</span>
+                    <p class="mb-1">Phone Number:
+                      <span class="color-a">+234{{ companydetail.company_phonenumber }}</span>
                     </p>
                   </div>
+                  {% endfor %}
                 </div>
               </div>
               <div class="icon-box section-b2">
+                {% for companydetail in companydetail %}
                 <div class="icon-box-icon">
                   <span class="ion-ios-pin"></span>
                 </div>
@@ -222,11 +223,11 @@
                   </div>
                   <div class="icon-box-content">
                     <p class="mb-1">
-                      Manhattan, Nueva York 10036,
-                      <br> EE. UU.
+                      {{ companydetail.company_location }}
                     </p>
                   </div>
                 </div>
+                {% endfor %}
               </div>
               <div class="icon-box">
                 <div class="icon-box-icon">
@@ -281,28 +282,28 @@
   <section class="section-footer">
     <div class="container">
       <div class="row">
+        {% for companydetail in companydetail %}
         <div class="col-sm-12 col-md-4">
           <div class="widget-a">
             <div class="w-header-a">
-              <h3 class="w-title-a text-brand">EstateAgency</h3>
+              <h3 class="w-title-a text-brand">Estate Agency</h3>
             </div>
             <div class="w-body-a">
               <p class="w-text-a color-text-a">
-                Enim minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exea commodo consequat duis
-                sed aute irure.
+                {{ companydetail.company_description }}
               </p>
             </div>
             <div class="w-footer-a">
               <ul class="list-unstyled">
                 <li class="color-a">
-                  <span class="color-text-a">Phone .</span> contact@example.com</li>
+                  <span class="color-text-a">Email: </span> {{ companydetail.company_email }}</li>
                 <li class="color-a">
-                  <span class="color-text-a">Email .</span> +54 356 945234</li>
+                  <span class="color-text-a">Phone Number: </span> +234{{ companydetail.company_phonenumber }}</li>
               </ul>
             </div>
           </div>
         </div>
-
+        {% endfor %}
       </div>
     </div>
   </section>

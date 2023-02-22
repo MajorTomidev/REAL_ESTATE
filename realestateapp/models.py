@@ -4,7 +4,7 @@ from django.core.validators import FileExtensionValidator
 
 # Create your models here.
 
-# PROPERTY MODEL--------------------------------------------------------------------
+# PROPERTY MODEL -----------------------------------------------------------------------------
 
 PROPERTY_CHOICES = (
     ('2 Bedroom Apartment', '2 Bedroom Apartment'),
@@ -21,11 +21,18 @@ STATUS_CHOICES = (
 ) 
 
 class PropertyAmenities(models.Model):
-    amenities = models.CharField(max_length=200, blank=True, null=True)
+    amenities = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.amenities
+    
+    class Meta:
+        verbose_name_plural = 'Property amenities'
+
 
 
 class PropertyImage(models.Model):
-    image = models.ImageField(default='property.jpg', upload_to='property_pictures')
+    image = models.ImageField(default='property.jpg', upload_to='album_pictures', null=True, blank=True)
 
 class Property(models.Model):
     property_name = models.CharField(max_length=100)
@@ -43,7 +50,7 @@ class Property(models.Model):
     baths = models.PositiveIntegerField()
     garage = models.PositiveIntegerField()
     floorplan_image = models.ImageField(upload_to='images_uploaded', null=True, blank=True)
-    amenities= models.ManyToManyField(PropertyAmenities, blank=True, null=True)
+    amenities= models.ManyToManyField(PropertyAmenities)
 
     def __str__(self):
         return self.property_name
@@ -52,10 +59,10 @@ class Property(models.Model):
         verbose_name_plural = 'Properties'
 
 
-# CONTACT AGENT MODEL----------------------------------------------------------------
+# CONTACT AGENT MODEL ----------------------------------------------------------------------
 
 class ContactAgentImage(models.Model):
-    image = models.ImageField(default='contact.jpg', upload_to='contact_pictures')
+    image = models.ImageField(default='contact.jpg', upload_to='album_pictures', null=True, blank=True)
 
     def __str__(self):
         return self.image.url
@@ -71,7 +78,7 @@ class Agent(models.Model):
         return self.agent_name
     
 
-# MESSAGE MODEL ----------------------------------------------------------------------
+# MESSAGE MODEL ----------------------------------------------------------------------------
 
 class CommentReply(models.Model):
     name = models.CharField(max_length=100)
@@ -82,6 +89,10 @@ class CommentReply(models.Model):
     def __str__(self):
         return self.name
     
+    class Meta:
+        verbose_name_plural = 'Comment replies'
+
+    
 
 # COMPANY DETAILS MODEL ----------------------------------------------------------------
 
@@ -89,9 +100,14 @@ class CompanyDetails(models.Model):
     company_description = models.TextField()
     company_phonenumber = models.PositiveBigIntegerField()
     company_email = models.EmailField()
+    company_location = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.company_email
+    
+    class Meta:
+        verbose_name_plural = 'Company details'
+
 
 # ABOUT MODEL --------------------------------------------------------------------------
 
@@ -101,16 +117,19 @@ class About(models.Model):
 
     def __str__(self):
         return self.about_headline
+    
+    class Meta:
+        verbose_name_plural = 'About'
 
 
 # BLOG MODEL ---------------------------------------------------------------------------
 
 class BlogImage(models.Model):
-    image = models.ImageField(default='blog.jpg', upload_to='blog_pictures')  
+    image = models.ImageField(default='blog.jpg', upload_to='album_pictures', null=True, blank=True)  
 
 class Blog(models.Model):
     blog_headline = models.CharField(max_length=100)
-    blog_image = models.ManyToManyField(BlogImage)
+    blog_image = models.ManyToManyField(BlogImage, null=True, blank=True)
     blog_content = models.TextField()
     date_published= models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
@@ -123,7 +142,6 @@ class Blog(models.Model):
 # CONTACT MODEL ---------------------------------------------------------------------------
 
 class Contact(models.Model):
-    contact_description = models.TextField()
     contact_name = models.CharField(max_length=100)
     contact_email = models.EmailField()
     contact_subject = models.CharField(max_length=100)
@@ -156,7 +174,7 @@ class Service(models.Model):
 # TESTIMONIALS MODEL -------------------------------------------------------------------------
 
 class TestimonialImage(models.Model):
-    image = models.ImageField(default='testimonials.jpg', upload_to='testimonials_pictures')
+    image = models.ImageField(default='testimonials.jpg', upload_to='album_pictures', null=True, blank=True)
 
 class Testimonial(models.Model):
     image = models.ManyToManyField(TestimonialImage)

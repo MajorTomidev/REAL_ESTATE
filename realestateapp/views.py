@@ -1,19 +1,26 @@
 from django.shortcuts import render, redirect
-from .models import Property, About, Agent, CommentReply, Contact, Message, Blog, Service
+from .models import Property, About, Agent, CommentReply, Contact, Message, Blog, Service, Testimonial, CompanyDetails
 from django.views.generic import ListView, DetailView
 from django.contrib import messages
 from .forms import ContactForm, MessageForm, CommentReplyForm
+from django.urls import reverse
 
 # Create your views here.
 
 # HOME VIEW ------------------------------------------------------
-def HomePage(request):
-    property = Property.objects.all()
-    return render(request, 'realestateapp/home/home.html', {"property": property}, {'services': services})
+# def HomePage(request):
+#     property = Property.objects.all()
+#     services = Service.objects.all()
+#     return render(request, 'realestateapp/home/home.html', {"property": property, 'services': services})
 
 def home_2(request):
+    service = Service.objects.all()
     property = Property.objects.all()
-    return render(request, 'realestateapp/home/home_2.html', {"property": property})
+    agents = Agent.objects.all()
+    blogs = Blog.objects.all()
+    testimonial = Testimonial.objects.all()
+    companydetail = CompanyDetails.objects.all()
+    return render(request, 'realestateapp/home/home_2.html', {"property": property, 'service': service, 'agents': agents, 'blogs': blogs, 'testimonial': testimonial, 'companydetail': companydetail})
 
 # SEARCH VIEW ----------------------------------------------------
 
@@ -30,34 +37,50 @@ def SearchPage(request):
 
 # PROPERTY VIEW ----------------------------------------------------
 
-class PropertyView(ListView):
-    model = Property
-    template_name = 'realestateapp/property/property-grid.html'
-    context_object_name = 'property'
+# class PropertyView(ListView):
+#     model = Property
+#     template_name = 'realestateapp/property/property-grid.html'
+#     context_object_name = 'property'
 
 
-class PropertyDetailView(DetailView):
-    model = Property
-    template_name = 'realestateapp/property/property-single.html'
-    context_object_name = 'property'
+def PropertyView(request):
+    property = Property.objects.all()
+    companydetail = CompanyDetails.objects.all()
+    return render(request, 'realestateapp/property/property-grid.html', {"property": property, 'companydetail': companydetail})
+
+
+
+# class PropertyDetailView(DetailView):
+#     model = Property
+#     template_name = 'realestateapp/property/property-single.html'
+#     context_object_name = 'property'
+
+# def PropertyDetailView(request):
+#     property = Property.objects.all()
+    # agents = Agent.objects.all()
+#     companydetail = CompanyDetails.objects.all()
+#     return render(request, 'realestateapp/property/property-single.html', {"property": property, 'agents': agents, 'companydetail': companydetail})
 
 
 
 # ABOUT VIEW ---------------------------------------------------------
 
-class AboutView(ListView):
-    model = About
-    template_name= 'realestateapp/about/about.html'
-    context_object_name = 'about'
-
+def AboutView(request):
+    about = About.objects.all()
+    agents = Agent.objects.all()
+    companydetail = CompanyDetails.objects.all()
+    return render(request, 'realestateapp/about/about.html', {"about": about,  'agents': agents, 'companydetail': companydetail})
 
 
 # AGENT VIEW -----------------------------------------------------------
 
-class AgentView(ListView):
-    model = Agent
-    template_name= 'realestateapp/agent/agents-grid.html'
-    context_object_name = 'agent'
+
+
+def AgentView(request):
+    agents = Agent.objects.all()
+    companydetail = CompanyDetails.objects.all()
+    return render(request, 'realestateapp/agent/agents-grid.html', {'agents': agents, 'companydetail': companydetail})
+
 
 class AgentDetailView(DetailView):
     model = Agent
@@ -67,10 +90,17 @@ class AgentDetailView(DetailView):
 
 # BLOG VIEW ---------------------------------------------------------------------
 
-class BlogView(ListView):
-    model = Blog
-    template_name= 'realestateapp/blog/blog-grid.html'
-    context_object_name = 'blog'
+# class BlogView(ListView):
+#     model = Blog
+#     template_name= 'realestateapp/blog/blog-grid.html'
+#     context_object_name = 'blog'
+
+def BlogView(request):
+    blog = Blog.objects.all()
+    companydetail = CompanyDetails.objects.all()
+    return render(request, 'realestateapp/blog/blog-grid.html', {  'blog': blog, 'companydetail': companydetail})
+
+
 
 class BlogDetailView(DetailView):
     model = Blog
@@ -89,11 +119,9 @@ def CommentReplyView(request):
         
 
         commentreply = CommentReply.objects.create(name=name, email=email, website=website, comment=comment)
-
-        if commentreply.is_valid():
-            commentreply.save()
-            messages.success(request, 'Your comment has been sent successfully')
-            return redirect('/')
+        commentreply.save()
+        messages.success(request, 'Your comment has been sent successfully')
+        return redirect('/')
         
     else: 
 
@@ -104,8 +132,8 @@ def CommentReplyView(request):
 def CommentReplyTest(request):
     if request.method == 'POST':
         form = CommentReplyForm(request.POST)
-        if form.is_valid():
-            form.save()
+        
+        form.save()
     else:
         form = CommentReplyForm()
     context = {'form': form}
@@ -115,9 +143,10 @@ def CommentReplyTest(request):
 # CONTACT_FORM VIEW----------------------------------------------------------------
 
 def ContactPage(request):
-    return render(request, 'realestateapp/contact/contact.html')
+    contact = Contact.objects.all()
+    companydetail = CompanyDetails.objects.all()
+    context = {"contact": contact, 'companydetail': companydetail }
 
-def ContactView(request):
     if request.method == 'POST':
         contact_name = request.POST.get('name')
         contact_email = request.POST.get('email')
@@ -127,22 +156,23 @@ def ContactView(request):
 
         contact_company = Contact.objects.create(contact_name=contact_name, contact_email=contact_email, contact_subject=contact_subject, contact_message=contact_message)
 
-        if contact_company.is_valid():
-            contact_company.save()
-            messages.success(request, 'Your message has been sent to one of our agents, They will reach out to you shortly.')
-            return redirect('/')
+        
+        contact_company.save()
+        messages.success(request, 'Your message has been sent to one of our agents, They will reach out to you shortly.')
+        return redirect('contactpage')
         
     else: 
 
-        return render(request, 'realestateapp/home/home.html')
+        return render(request, 'realestateapp/contact/contact.html', context)
     
 
 
 def ContactViewTest(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
+        
+        form.save()
+        messages.success(request, 'Your message has been sent to one of our agents, They will reach out to you shortly.')
     else:
         form = ContactForm()
     context = {'form': form}
@@ -151,7 +181,13 @@ def ContactViewTest(request):
 
 
 # MESSAGE_FORM VIEW -------------------------------------------------------------------
-def MessageView(request):
+
+def PropertyDetailView(request, pk):
+    property = Property.objects.get(id=pk)
+    agents = Agent.objects.all()[0]
+    companydetail = CompanyDetails.objects.all()
+    context = {"property": property, 'companydetail': companydetail, 'agents': agents }
+
     if request.method == 'POST':
         name = request.POST.get('name')
         email = request.POST.get('email')
@@ -160,22 +196,29 @@ def MessageView(request):
 
         commentreply = Message.objects.create(name=name, email=email, comment=comment)
 
-        if commentreply.is_valid():
-            commentreply.save()
-            messages.success(request, 'Your message has been sent successfully')
-            return redirect('/')
+        
+        commentreply.save()
+        messages.success(request, 'Your message has been sent successfully')
+        return redirect(reverse('propertydetailpage', kwargs={'pk':request.pk}))
         
     else: 
 
-        return render(request, 'realestateapp/home/home.html')
+        return render(request, 'realestateapp/property/property-single.html', context)
     
+#  def PropertyDetailView(request):
+#     property = Property.objects.all()
+    # agents = Agent.objects.all()
+#     companydetail = CompanyDetails.objects.all()
+#     return render(request, 'realestateapp/property/property-single.html', {"property": property, 'agents': agents, 'companydetail': companydetail})
+
+
 
 
 def MessageViewTest(request):
     if request.method == 'POST':
         form = MessageForm(request.POST)
-        if form.is_valid():
-            form.save()
+        
+        form.save()
     else:
         form = MessageForm()
     context = {'form': form}
@@ -183,7 +226,3 @@ def MessageViewTest(request):
 
 # SERVICE VIEW -------------------------------------------------------------------
 
-class Service(ListView):
-    model = Service
-    template_name = 'service.html'
-    context_object_name = 'services'

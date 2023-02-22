@@ -92,18 +92,7 @@
           <li class="nav-item">
             <a class="nav-link active" href="{% url 'blogpage' %}">Blog</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Pages
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{% url 'propertypage'  %}">Property Single</a>
-              <a class="dropdown-item" href="{% url 'blogpage'  %}">Blog Single</a>
-              <a class="dropdown-item" href="{% url 'agentpage' %}">Agents Grid</a>
-              <a class="dropdown-item" href="{% url 'agentpage'  %}">Agent Single</a>
-            </div>
-          </li>
+         
           <li class="nav-item">
             <a class="nav-link" href="{% url 'contactpage'  %}">Contact</a>
           </li>
@@ -124,7 +113,7 @@
         <div class="col-md-12 col-lg-8">
           <div class="title-single-box">
             <h1 class="title-single">Our Amazing Posts</h1>
-            <span class="color-text-a">Grid News</span>
+            <span class="color-text-a">News</span>
           </div>
         </div>
         <div class="col-md-12 col-lg-4">
@@ -134,7 +123,7 @@
                 <a href="{% url 'home'  %}">Home</a>
               </li>
               <li class="breadcrumb-item active" aria-current="page">
-                News Grid
+                Blog
               </li>
             </ol>
           </nav>
@@ -148,31 +137,32 @@
   <section class="news-grid grid">
     <div class="container">
       <div class="row">
+        {% for blog in blog %}
         <div class="col-md-4">
-          {% for blog in blog %}
+          
           <div class="card-box-b card-shadow news-box">
             <div class="img-box-b">
-              <img src="img/post-1.jpg" alt="" class="img-b img-fluid">
+              <img src="{% static 'realestateapp/img/post-1.jpg' %}" alt="" class="img-b img-fluid">
             </div>
             <div class="card-overlay">
               <div class="card-header-b">
                 <div class="card-category-b">
-                  <a href="#" class="category-b">{{ blog_category }}</a>
+                  <a href="#" class="category-b">{{ blog.blog_category }}</a>
                 </div>
                 <div class="card-title-b">
                   <h2 class="title-2">
-                    <a href="{% url 'blogdetailpage' blog.id %}">{{ blog_headline }}</a>
+                    <a href="{% url 'blogpage'  %}">{{ blog.blog_headline }}</a>
                   </h2>
                 </div>
                 <div class="card-date">
-                  <span class="date-b">{{ date_published }}</span>
+                  <span class="date-b">{{ blog.date_published }}</span>
                 </div>
               </div>
             </div>
           </div>
-          {% endfor %}
+          
         </div>
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
           <div class="card-box-b card-shadow news-box">
             <div class="img-box-b">
               <img src="img/post-2.jpg" alt="" class="img-b img-fluid">
@@ -193,8 +183,8 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-4">
+        </div> -->
+        <!-- <div class="col-md-4">
           <div class="card-box-b card-shadow news-box">
             <div class="img-box-b">
               <img src="img/post-3.jpg" alt="" class="img-b img-fluid">
@@ -206,7 +196,7 @@
                 </div>
                 <div class="card-title-b">
                   <h2 class="title-2">
-                    <a href="{% url 'blogpage'  %}">Travel is comming
+                    <a href="{% url 'blogpage' %}">Travel is comming
                       <br> new</a>
                   </h2>
                 </div>
@@ -216,8 +206,8 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-4">
+        </div> -->
+        <!-- <div class="col-md-4">
           <div class="card-box-b card-shadow news-box">
             <div class="img-box-b">
               <img src="img/post-4.jpg" alt="" class="img-b img-fluid">
@@ -229,7 +219,7 @@
                 </div>
                 <div class="card-title-b">
                   <h2 class="title-2">
-                    <a href="{% url 'blogdetailpage' blog.pk %}">Travel is comming
+                    <a href="{% url 'blogpage' %}">Travel is comming
                       <br> new</a>
                   </h2>
                 </div>
@@ -239,8 +229,8 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-4">
+        </div> -->
+        <!-- <div class="col-md-4">
           <div class="card-box-b card-shadow news-box">
             <div class="img-box-b">
               <img src="img/post-5.jpg" alt="" class="img-b img-fluid">
@@ -252,7 +242,7 @@
                 </div>
                 <div class="card-title-b">
                   <h2 class="title-2">
-                    <a href="{% url 'blogdetailpage' blog.pk %}">Travel is comming
+                    <a href="{% url 'blogpage' %}">Travel is comming
                       <br> new</a>
                   </h2>
                 </div>
@@ -262,8 +252,8 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-4">
+        </div> -->
+        <!-- <div class="col-md-4">
           <div class="card-box-b card-shadow news-box">
             <div class="img-box-b">
               <img src="img/post-6.jpg" alt="" class="img-b img-fluid">
@@ -275,7 +265,7 @@
                 </div>
                 <div class="card-title-b">
                   <h2 class="title-2">
-                    <a href="{% url 'blogpage' blog.id %}">Travel is comming
+                    <a href="{% url 'blogpage' %}">Travel is comming
                       <br> new</a>
                   </h2>
                 </div>
@@ -285,7 +275,8 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
+        {% endfor %}
       </div>
       <div class="row">
         <div class="col-sm-12">
@@ -322,28 +313,28 @@
   <section class="section-footer">
     <div class="container">
       <div class="row">
+        {% for companydetail in companydetail %}
         <div class="col-sm-12 col-md-4">
           <div class="widget-a">
             <div class="w-header-a">
-              <h3 class="w-title-a text-brand">EstateAgency</h3>
+              <h3 class="w-title-a text-brand">Estate Agency</h3>
             </div>
             <div class="w-body-a">
               <p class="w-text-a color-text-a">
-                Enim minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exea commodo consequat duis
-                sed aute irure.
+                {{ companydetail.company_description }}
               </p>
             </div>
             <div class="w-footer-a">
               <ul class="list-unstyled">
                 <li class="color-a">
-                  <span class="color-text-a">Phone .</span> contact@example.com</li>
+                  <span class="color-text-a">Email: </span> {{ companydetail.company_email }}</li>
                 <li class="color-a">
-                  <span class="color-text-a">Email .</span> +54 356 945234</li>
+                  <span class="color-text-a">Phone Number:</span> +234{{ companydetail.company_phonenumber }}</li>
               </ul>
             </div>
           </div>
         </div>
-
+        {% endfor %}
       </div>
     </div>
   </section>
